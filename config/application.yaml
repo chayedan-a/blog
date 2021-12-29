@@ -1,0 +1,13 @@
+server:
+  port: ":8080"
+database:
+  mysql:
+    addr: "127.0.0.1"
+    port: 3306
+    username: "root"
+    password: "aA03120428!"
+    name: "blog"
+  redis:
+    addr: "127.0.0.1"
+    port: 6379
+    password: "aA03120428!"
