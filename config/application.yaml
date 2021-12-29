@@ -11,3 +11,10 @@ database:
     addr: "127.0.0.1"
     port: 6379
     password: "aA03120428!"
+aliyun:
+  accessKeyId: "xxx"
+  accessKeySecret: "xxx"
+  signName: "xxx"
+  templateCode: "xxx"
+  endpoint: "xxx"
+  bucketName: "xxx"

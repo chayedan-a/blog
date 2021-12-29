@@ -2,18 +2,15 @@ package service
 
 import (
 	"blog/internal/dao"
-	"blog/internal/model/result"
 )
 
 type Service struct {
-	dao    *dao.Dao
-	ErrMap map[uint]string
+	dao *dao.Dao
 }
 
 func New() *Service {
 	srv := Service{
-		dao:    dao.New(),
-		ErrMap: result.GetErrMap(),
+		dao: dao.New(),
 	}
 	return &srv
 }

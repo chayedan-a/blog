@@ -18,4 +18,12 @@ type ConfigData struct {
 			Password string `json:"password" yaml:"password"`
 		} `json:"redis" yaml:"redis"`
 	} `json:"database" yaml:"database"`
+	ALiYun struct {
+		AccessKeyId     string `json:"accessKeyId" yaml:"accessKeyId"`
+		AccessKeySecret string `json:"accessKeySecret" yaml:"accessKeySecret"`
+		SignName        string `json:"signName" yaml:"signName"`
+		TemplateCode    string `json:"templateCode" yaml:"templateCode"`
+		EndPoint        string `json:"endPoint" yaml:"endPoint"`
+		BucketName      string `json:"bucketName" yaml:"bucketName"`
+	} `json:"aLiYun" yaml:"aLiYun"`
 }
