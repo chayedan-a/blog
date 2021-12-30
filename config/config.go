@@ -14,7 +14,7 @@ func Config() *model.ConfigData {
 	//配置文件名（不带扩展名）
 	config.SetConfigName("application")
 	//在项目中查找配置文件的路径，可以使用相对路径，也可以使用绝对路径
-	config.AddConfigPath("../config")
+	config.AddConfigPath("E:\\")
 	//多次调用以添加多个搜索路径
 	//viper.AddConfigPath("D:/go_project/src/github.com/ourlang/demo/utils")
 	//设置文件类型，这里是yaml文件

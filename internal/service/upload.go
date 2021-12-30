@@ -2,41 +2,60 @@ package service
 
 import (
 	"fmt"
-	"os"
+	"path"
+	"path/filepath"
+	"time"
 
-	"blog/config"
+	"blog/internal/model/result"
 
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/gin-gonic/gin"
 )
 
 func (s *Service) Upload(c *gin.Context) {
 	file, err := c.FormFile("file")
-	//allowExts := []string {".jpg", ".png", ".gif", ".jpeg", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".pdf"}
-	aLiYun := config.Config().ALiYun
-	// 创建OSSClient实例。
-	client, err := oss.New(aLiYun.EndPoint, aLiYun.AccessKeyId, aLiYun.AccessKeySecret)
 	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(-1)
+		fmt.Printf("Upload FormFile err：%+v", err)
+		result.Fail(c, result.Error)
+		return
 	}
 
-	// 获取存储空间。
-	bucket, err := client.Bucket(aLiYun.BucketName)
+	allowExts := []string{".jpg", ".png", ".jpeg"}
+	ext := path.Ext(file.Filename)
+	if !containsInSlice(allowExts, ext) {
+		result.Fail(c, result.NotSupportedFileExt)
+		return
+	}
+	fileHeader, err := file.Open()
 	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(-1)
+		fmt.Printf("Upload Open err：%+v", err)
+		result.Fail(c, result.Error)
+		return
 	}
 
-	fd, err := file.Open()
-	// 读取本地文件。
+	defer fileHeader.Close()
 
-	defer fd.Close()
-
+	now := time.Now()
+	fileDir := fmt.Sprintf("articles/%s", now.Format("200601"))
+	timeStamp := now.Unix()
+	fileName := fmt.Sprintf("%d-%s", timeStamp, file.Filename)
+	objectName := filepath.Join(fileDir, fileName)
+	fmt.Println(objectName)
 	// 上传文件流。
-	err = bucket.PutObject("<yourObjectName>", fd)
+	url, err := s.dao.OssUpload(objectName, fileHeader)
 	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(-1)
+		result.Fail(c, result.Error)
+		return
 	}
+	result.Ok(c, map[string]string{
+		"path": url,
+	})
+}
+
+func containsInSlice(items []string, item string) bool {
+	for _, v := range items {
+		if v == item {
+			return true
+		}
+	}
+	return false
 }

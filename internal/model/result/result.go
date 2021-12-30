@@ -15,7 +15,7 @@ func Fail(c *gin.Context, code uint) {
 func Ok(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "success",
+		"msg":  GetErrMap()[200],
 		"data": data,
 	})
 }
